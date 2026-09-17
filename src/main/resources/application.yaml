@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: campus-trade
+
+
+  # ===== 数据库连接 =====
+  datasource:
+    url: jdbc:mysql://localhost:3306/campus_trade?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: zzh050105
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# ===== MyBatis-Plus =====
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true                      # is_deleted → isDeleted 自动映射
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl   # ★ 控制台打印真实 SQL
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted     # 逻辑删除字段（数据库设计里有）
+      logic-delete-value: 1             # 删除后置 1
+      logic-not-delete-value: 0         # 未删除为 0
+  mapper-locations: classpath*:mapper/**/*.xml
+
+# ===== 端口 =====
+server:
+  port: 8080
