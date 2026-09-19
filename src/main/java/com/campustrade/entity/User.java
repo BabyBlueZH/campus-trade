@@ -27,7 +27,7 @@ public class User {
 
     private String nickname;
     private String phone;
-    private String avatar;
+    private String avatar;// 头像
 
     /** 0-普通用户 1-管理员 */
     private Integer role;
@@ -35,8 +35,8 @@ public class User {
     /** 0-禁用 1-正常 */
     private Integer status;
 
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
+    private LocalDateTime createTime;// 创建时间
+    private LocalDateTime updateTime;// 更新时间
 
     /** 逻辑删除：0-未删除 1-已删除（MP 自动过滤） */
     @TableLogic

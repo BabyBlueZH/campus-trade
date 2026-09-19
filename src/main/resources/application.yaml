@@ -22,6 +22,13 @@ mybatis-plus:
       logic-not-delete-value: 0         # 未删除为 0
   mapper-locations: classpath*:mapper/**/*.xml
 
+# ===== JWT =====
+jwt:
+  # 签名密钥：HS256 要求至少 32 字节（256 位），太短 jjwt 会直接报错
+  # 生产环境要放环境变量 / 配置中心，绝不能提交到 Git
+  secret: ${JWT_SECRET}
+  expiration: 604800000   # 7 天（单位：毫秒）
+
 # ===== 端口 =====
 server:
   port: 8080
