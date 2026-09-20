@@ -19,11 +19,11 @@ import java.util.Date;
 public class JwtUtil {
 
     /** 签名密钥（HS256 要求至少 32 字节） */
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret}") //从 application.yaml 文件的 jwt.secret 读取密钥
     private String secret;
 
     /** 过期时间（毫秒） */
-    @Value("${jwt.expiration}")
+    @Value("${jwt.expiration}")//
     private long expiration;
 
     /** 把字符串密钥转成 jjwt 需要的 SecretKey 对象 */
@@ -52,10 +52,10 @@ public class JwtUtil {
      * <p>
      * token 被篡改、签名不对、已过期 —— 都会抛异常（由调用方处理）
      */
-    public Claims parse(String token) {
+    public Claims parse(String token) {//
         return Jwts.parser()
                 .verifyWith(key())          // 用同一个密钥验签
-                .build()
+                .build()           // 创建解析器
                 .parseSignedClaims(token)   // 解析并校验签名
                 .getPayload();
     }
