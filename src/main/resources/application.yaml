@@ -2,6 +2,10 @@ spring:
   application:
     name: campus-trade
 
+  # 本地敏感配置覆盖（application-local.yaml 已被 .gitignore 排除）
+  config:
+    import: optional:file:./application-local.yaml
+
 
   # ===== 数据库连接 =====
   datasource:

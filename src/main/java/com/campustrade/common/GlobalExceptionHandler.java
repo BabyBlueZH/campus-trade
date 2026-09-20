@@ -2,6 +2,7 @@ package com.campustrade.common;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,6 +21,12 @@ import java.util.stream.Collectors;
 @RestControllerAdvice    // 统一处理异常
 
 public class GlobalExceptionHandler {
+
+    /** 请求方法不对 —— 比如用 GET 访问只支持 POST 的接口 */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public Result<Void> handleMethodNotSupported(HttpRequestMethodNotSupportedException e) {
+        return Result.error(405, "请求方法不对：" + e.getMethod() + " 不被支持");
+    }
 
     /** 业务异常 —— 自己抛的，有明确的 code 和 message */
     @ExceptionHandler(BusinessException.class)
