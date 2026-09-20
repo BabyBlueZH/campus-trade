@@ -1,5 +1,6 @@
 package com.campustrade.service;
 
+import com.campustrade.dto.request.LoginRequest;
 import com.campustrade.dto.request.RegisterRequest;
 import com.campustrade.entity.User;
 import org.springframework.stereotype.Service;
@@ -22,5 +23,8 @@ public interface UserService {
 
     /** 注册新用户，返回创建好的用户（不含密码） */
     User register(RegisterRequest req);
+
+    /** 登录，成功返回 JWT Token */
+    String login(LoginRequest req);
 }
 

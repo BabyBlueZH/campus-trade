@@ -2,13 +2,18 @@ package com.campustrade.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.campustrade.common.BusinessException;
+import com.campustrade.common.JwtUtil;
+import com.campustrade.common.Result;
+import com.campustrade.dto.request.LoginRequest;
 import com.campustrade.dto.request.RegisterRequest;
 import com.campustrade.entity.User;
 import com.campustrade.mapper.UserMapper;
 import com.campustrade.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /** 表明这是一个 Spring 管理的 Service 层组件来创建Bean，
  类上面必须加 @Service 注解，Spring 才会把它放进容器，@Autowired才能注入成功。
@@ -16,20 +21,31 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    //字段注入
-//    @Autowired
-//    private UserMapper userMapper;
-//
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    /**
+     * 字段注入
+     * @Autowired
+     * private UserMapper userMapper;
+     *
+     * @Autowired
+     * private PasswordEncoder passwordEncoder;
+     */
+
     //构造器注入
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public UserServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder){
+    public UserServiceImpl(UserMapper userMapper,
+                           PasswordEncoder passwordEncoder,
+                           UserService userService,
+                           JwtUtil jwtUtil){
+        this.jwtUtil = jwtUtil;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
+
 
 
     @Override
@@ -62,6 +78,18 @@ public class UserServiceImpl implements UserService {
         userMapper.insert(user);//将用户数据插入到数据库中
         user.setPassword(null);//将密码设置为 null，不返回给前端
         return user;
+
+    }
+
+    @Override
+    public String login(LoginRequest req) {
+        //1.按用户名查用户
+        User user = userMapper.selectOne(
+                new LambdaQueryWrapper<User>()
+                        .eq(User::getUsername, req.getUsername())
+        );
+
+        //2.校验用户名 + 密码
 
     }
 
