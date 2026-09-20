@@ -31,3 +31,14 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### 敏感配置 / 本地覆盖（防止明文密钥再被提交）###
+.env
+*.env
+application-local.yml
+application-local.yaml
+application-local.properties
+
+### 本地备份压缩包（可能含明文配置）###
+*.tar.gz
+*.zip
