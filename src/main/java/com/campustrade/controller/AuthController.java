@@ -2,6 +2,7 @@ package com.campustrade.controller;
 
 
 import com.campustrade.common.Result;
+import com.campustrade.dto.request.LoginRequest;
 import com.campustrade.dto.request.RegisterRequest;
 import com.campustrade.entity.User;
 import com.campustrade.service.UserService;
@@ -31,6 +32,10 @@ public class AuthController {
     // 而 GET 会被浏览器预取、爬虫抓取、日志记录——密码直接进日志
     public Result<User> register(@RequestBody @Valid RegisterRequest req) {
         return Result.success(userService.register(req));
+    }
+    @PostMapping("/login")
+    public Result<String> login(@RequestBody @Valid LoginRequest req){
+        return Result.success(userService.login(req));
     }
 }
 

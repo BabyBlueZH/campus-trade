@@ -33,20 +33,17 @@ public class UserServiceImpl implements UserService {
     //构造器注入
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final UserService userService;
+
     private final JwtUtil jwtUtil;
 
     public UserServiceImpl(UserMapper userMapper,
-                           PasswordEncoder passwordEncoder,
-                           UserService userService,
+                       PasswordEncoder passwordEncoder,
                            JwtUtil jwtUtil){
         this.jwtUtil = jwtUtil;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
-        this.userService = userService;
+
     }
-
-
 
     @Override
     public User register(RegisterRequest req){
@@ -83,14 +80,33 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(LoginRequest req) {
-        //1.按用户名查用户
+        //1.按用户名username查用户
         User user = userMapper.selectOne(
                 new LambdaQueryWrapper<User>()
-                        .eq(User::getUsername, req.getUsername())
+                        .eq(User::getUsername,
+                                req.getUsername())
         );
 
         //2.校验用户名 + 密码
+        if (user == null || !passwordEncoder.
+                matches(req.getPassword(), user.getPassword())) {
+            throw new BusinessException(401, "用户名或密码错误");
+        }//match(明文, 密文)
+        //用户名不存在 和 密码错误，必须返回同一个提示，攻击者可以通过错误提示来判断用户名对不对
 
+        //3.检查status：为0=账号被禁用-> 拒绝登录
+        if (user.getStatus() != null && user.getStatus() == 0) {
+            throw new BusinessException(403, "账号已被禁用");
+        }
+
+        //4.签发Token 并返回
+        return jwtUtil.generate(user.getId(), user.getUsername());
+
+        /**
+         *为什么密码校验(步骤2)要放在 status 校验(步骤3)前面? 顺序反过来的话,有人拿用户名去试,禁用账号会提前返回
+         * 403、正常账号返回 401,等于告诉攻击者"这个用户名存在"——你辛辛苦苦在坑 2
+         * 里防的用户名枚举,从后门漏出去了。所以先拿到密码这关,过了再谈状态。
+         */
     }
 
 }
