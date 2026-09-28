@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
         if (count != null && count > 0){
             throw new BusinessException("用户名已被注册");
         }
+        
         User user = new User();
         user.setUsername(req.getUsername());
 
