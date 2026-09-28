@@ -3,17 +3,16 @@ package com.campustrade.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.campustrade.common.BusinessException;
 import com.campustrade.common.JwtUtil;
-import com.campustrade.common.Result;
+
 import com.campustrade.dto.request.LoginRequest;
 import com.campustrade.dto.request.RegisterRequest;
 import com.campustrade.entity.User;
 import com.campustrade.mapper.UserMapper;
 import com.campustrade.service.UserService;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 /** 表明这是一个 Spring 管理的 Service 层组件来创建Bean，
  类上面必须加 @Service 注解，Spring 才会把它放进容器，@Autowired才能注入成功。

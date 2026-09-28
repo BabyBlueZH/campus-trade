@@ -3,7 +3,6 @@ package com.campustrade.service;
 import com.campustrade.dto.request.LoginRequest;
 import com.campustrade.dto.request.RegisterRequest;
 import com.campustrade.entity.User;
-import org.springframework.stereotype.Service;
 
 /**
  * register() 要做的三件事：
